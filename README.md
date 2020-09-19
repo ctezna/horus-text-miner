@@ -26,6 +26,7 @@ Parallel programming framework for efficient text mining.
 
 ## Architecture
 ![alt_text](docs/horus-text-mining.png "image_tooltip")
+Please refer to https://github.com/ctezna/horus-text-miner/blob/master/docs/horus-text-miner-proposal.pdf for a more detailed documentation.
 
 ## References
 [1] Grossman D.A., Frieder O. (2004) Parallel Information Retrieval. In: Information Retrieval. The Kluwer International Series on Information Retrieval, vol 15. Springer, Dordrecht. https://doi.org/10.1007/978-1-4020-3005-5_7<br><br>
