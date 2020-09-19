@@ -15,7 +15,7 @@ Parallel programming framework for efficient text mining.
 <div>
 <strong>Nicolas Gonzalez</strong><br>
 <small>ngonza27@eafit.edu.co</small><br>
-<p>contribution to the project,contribution to the project,contribution to the project,contribution to the project,contribution to the project,contribution to the project,contribution to the project,contribution to the project</p>
+<p><em>"The faster the better".</em> I am a programmer for Horus team.</p>
 </div>
 
 <div>
