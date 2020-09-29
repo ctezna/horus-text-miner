@@ -1,0 +1,4 @@
+Dataset source:
+
+Kushwaha, S. (2019, January 26). BBC Full Text Document Classification. Retrieved from https://www.kaggle.com/shivamkushwaha/bbc-full-text-document-classification
+
