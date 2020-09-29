@@ -36,5 +36,5 @@ Please refer to https://github.com/ctezna/horus-text-miner/blob/master/docs/horu
 [2] Jurafsky, D., & Martin, J. H. (2019). N-gram Language Models [PDF]. Stanford: University of Stanford.<br><br>
 [3] Loiacono, D. (2010). Information Retrieval & Text Mining [PPT]. Milan: Politecnico di Milano.<br><br>
 [4] Pecina, P. (2017). Probabilistic Models for Information Retrieval [PDF]. Maceió, Brazil: Universidad Federal de Alagoas.<br><br>
-[5] Waterloo, U. (2010). Parallel Information Retrieval [PDF]. Boston: MIT Press.
+[5] Waterloo, U. (2010). Parallel Information Retrieval [PDF]. Boston: MIT Press.<br><br>
 [6] - D. Greene and P. Cunningham. "Practical Solutions to the Problem of Diagonal Dominance in Kernel Document Clustering", Proc. ICML 2006.
