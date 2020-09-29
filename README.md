@@ -1,8 +1,10 @@
 # Horus Text Miner
 ![alt_text](docs/horusFramework.png "image_tooltip")
+
 <p>
 Parallel programming framework for efficient text mining.
 </p>
+<em>"The faster the better"</em>
 
 ## Meet The Team
 
@@ -24,7 +26,6 @@ Parallel programming framework for efficient text mining.
 <p>contribution to the project,contribution to the project,contribution to the project,contribution to the project,contribution to the project,contribution to the project,contribution to the project,contribution to the project</p>
 </div>
 
-<em>"The faster the better"</em>
 
 ## Architecture
 ![alt_text](docs/horus-text-mining.png "image_tooltip")
