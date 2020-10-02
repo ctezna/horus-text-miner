@@ -51,8 +51,9 @@ def tf_idf_weighting(text):
     tf_transformer = TfidfTransformer(smooth_idf=True, use_idf=True).fit(word_vec)
     x_data = tf_transformer.transform(word_vec)
 
-    df_idf = pd.DataFrame(tf_transformer.idf_, index=count_vect.get_feature_names(),columns=["idf_weights"]) 
+    df_idf = pd.DataFrame(tf_transformer.idf_, index=count_vect.get_feature_names(),columns=['idf_weights']) 
  
+    print(word_vec)
     # sort ascending 
     df_idf.sort_values(by=['idf_weights'])
 
@@ -69,7 +70,7 @@ def load_collection(files):
     texts = []
     for file in files:
         doc_id, text = load_document(file)
-        texts.append(text)
+        texts.append((doc_id, text))
     return texts
 
 
@@ -78,7 +79,9 @@ if __name__ == "__main__":
 
     start = time.time()
     corpus = load_collection(files)
-    tf_idf_weighting(corpus)
+    for doc_id, text in corpus:
+        tf_idf_weighting(doc_id, text)
+    
     end = time.time()
     print(end - start)
     print(len(freqs))
