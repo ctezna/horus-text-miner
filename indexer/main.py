@@ -6,7 +6,7 @@ def highlight_term(id, term, text):
     terms = findWholeWord(term)(text)
     title = text.partition('\n')[0]
     for term in terms:
-        replaced_text = text.replace(title, "\033[1;34;40m{title}\033[0;0m".format(title=title))
+        replaced_text = text.replace(title, "\033[1;31;40m{title}\033[0;0m".format(title=title))
         final_text = replaced_text.replace(term, "\033[1;32;40m{term}\033[0;0m".format(term=term))
     return "--- document {id}: {replaced}".format(id=id, replaced=final_text)
 
@@ -37,12 +37,6 @@ def index_corpus(index):
     corpus = load_collection(files)
     num_docs = len(corpus)
     doc_freqs = index.doc_freq(corpus)
-    # for doc_id, text in corpus:
-    #     document = {
-    #         'id': doc_id,
-    #         'text': text
-    #     }
-    #     index.index_document(document)
     for doc_id, text in corpus:
         document = {
             'id': doc_id,
@@ -50,17 +44,19 @@ def index_corpus(index):
         }
         index.build_index(document, num_docs, doc_freqs)
     end = time.time()
-    print('\033[1;32;40m Indexing time: \033[0;0m', end - start)
+    print('\033[1;36;40m Indexing time: \033[0;0m', end - start)
 
     #index.get_index(1)
 
 def query_collection(index, db):
     import time
     search_term = input("Enter term(s) to search: ")
+    if search_term in ['quit()', 'exit()']:
+        exit(0)
     start = time.time()
     result = index.lookup_query(search_term)
     end = time.time()
-    print('\033[1;32;40m Search time: \033[0;0m', end - start)
+    print('\033[1;36;40m Search time: \033[0;0m', end - start)
     
     start = time.time()
     for term in result.keys():
@@ -69,7 +65,7 @@ def query_collection(index, db):
             print(highlight_term(appearance.docId, term, document['text']))
         print("-----------------------------")    
     end = time.time()
-    print('\033[1;32;40m Retrieval time: \033[0;0m', end - start)
+    print('\033[1;36;40m Retrieval time: \033[0;0m', end - start)
 
 def main():
     from DocCollection import DocCollection
