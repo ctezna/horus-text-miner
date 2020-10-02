@@ -11,6 +11,9 @@ class DocCollection:
         return str(self.__dict__)
     
     def get(self, id):
+        """
+        Retrieves document from collection, returns None if no doc exists
+        """
         return self.db.get(id, None)
     
     def add(self, document):

@@ -17,5 +17,8 @@ class Appearance:
 
 from json import JSONEncoder
 class AppearanceEncoder(JSONEncoder):
+    """
+    Used to encode Appearance object to JSON
+    """
     def default(self, o):
         return o.__dict__ 

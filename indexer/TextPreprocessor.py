@@ -4,9 +4,9 @@ class TextPreprocessor:
     """
     def __init__(self):
         """
-        tokenizer   -- NLTK compatible tokenizer function
-        stemmer     -- NLTK compatible stemmer 
-        stopwords   -- list of ignored words
+        lemmatizer   -- NLTK compatible lemmatize function
+        remove_terms -- extra terms to ignore
+        stopwords    -- list of ignored words
         """
         import nltk
         from nltk.corpus import stopwords
@@ -16,6 +16,9 @@ class TextPreprocessor:
         self.lemmatizer = nltk.WordNetLemmatizer()
 
     def preprocess(self, document):
+        """
+        Tokenizes documents then normalizes and lemmatizes tokens
+        """
         from nltk.tokenize import word_tokenize
         import string
         words = word_tokenize(document)
