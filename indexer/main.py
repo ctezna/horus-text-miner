@@ -24,8 +24,7 @@ def load_collection(files):
         texts.append((doc_id, text))
     return texts
 
-
-def main():
+def index_corpus():
     import os
     import time
     from DocCollection import DocCollection
@@ -57,8 +56,8 @@ def main():
 
     #index.get_index(1)
 
-    
-    
+def query_collection():
+    import time
     search_term = input("Enter term(s) to search: ")
     start = time.time()
     result = index.lookup_query(search_term)
@@ -73,5 +72,11 @@ def main():
         print("-----------------------------")    
     end = time.time()
     print('\033[1;32;40m Retrieval time: \033[0;0m', end - start)
+
+def main():
+    index_corpus()
+
+    while(True):
+        query_collection()
     
 main()
