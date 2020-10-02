@@ -16,7 +16,6 @@ class InvertedIndex:
 
     def doc_freq(self, corpus):
         from gensim import corpora
-        import nltk
         dictionary = corpora.Dictionary(self.preprocessor.preprocess(doc) for docid, doc in corpus)
         dfs = {}
         for key, value in dictionary.token2id.items():

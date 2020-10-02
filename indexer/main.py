@@ -95,6 +95,6 @@ def main(create_index=False):
                 exit(0)
 
     while(True):
-        query_collection(index, db)
+        query_collection(index, db, get_docs=True)
     
 main(create_index=True)
