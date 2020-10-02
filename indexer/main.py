@@ -95,6 +95,6 @@ def main(create_index=False):
                 exit(0)
 
     while(True):
-        query_collection(index, db, get_docs=True)
+        query_collection(index, db, get_docs=False) # get_docs cannot be True if create_index is False
     
-main(create_index=True)
+main(create_index=False)
