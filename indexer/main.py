@@ -97,4 +97,4 @@ def main(create_index=False):
     while(True):
         query_collection(index, db)
     
-main(create_index=False)
+main(create_index=True)
