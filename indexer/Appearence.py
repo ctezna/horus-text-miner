@@ -13,3 +13,9 @@ class Appearance:
         String representation of the Appearance object
         """
         return str(self.__dict__)
+
+
+from json import JSONEncoder
+class AppearanceEncoder(JSONEncoder):
+    def default(self, o):
+        return o.__dict__ 

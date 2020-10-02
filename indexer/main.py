@@ -45,14 +45,19 @@ def index_corpus(index):
         index.build_index(document, num_docs, doc_freqs)
     end = time.time()
     print('\033[1;36;40m Indexing time: \033[0;0m', end - start)
+    index.save_index()
 
     #index.get_index(1)
 
-def query_collection(index, db):
+def query_collection(index, db, get_docs=False):
     import time
-    search_term = input("Enter term(s) to search: ")
+    import nltk
+    lemmatizer = nltk.WordNetLemmatizer()
+    search_term = input("Enter term(s) to search: ").lower()
     if search_term in ['quit()', 'exit()']:
         exit(0)
+
+    search_term = lemmatizer.lemmatize(search_term)
     start = time.time()
     result = index.lookup_query(search_term)
     end = time.time()
@@ -61,22 +66,35 @@ def query_collection(index, db):
     start = time.time()
     for term in result.keys():
         for appearance in result[term]:
-            #document = db.get(appearance.docId)
-            #print(highlight_term(appearance.docId, term, document['text']))
             document = db.get(appearance[0])
-            print(highlight_term(appearance[0], term, document['text']))
+            print('Document: ', appearance[0], ' Term found: ', term ,' Score: ', '{:.5f}'.format(appearance[1]))
+            if get_docs:
+                print(highlight_term(appearance[0], term, document['text']))
         print("-----------------------------")    
     end = time.time()
     print('\033[1;36;40m Retrieval time: \033[0;0m', end - start)
 
-def main():
+def main(create_index=False):
     from DocCollection import DocCollection
     from InvertedIndex import InvertedIndex
     db = DocCollection()
     index = InvertedIndex(db)
-    index_corpus(index)
+
+    if create_index:
+        index_corpus(index)
+    else:
+        try:
+            index.load_index_from_file('./indexer/inverted_index.txt')
+        except FileNotFoundError:
+            print('Must create and save Inverted Index first!')
+            user_input = input('Do you want to create Inverted Index now? y/n\n')
+            if user_input.lower() == 'y':
+                print('Indexing Documents . . .')
+                index_corpus(index)
+            else:
+                exit(0)
 
     while(True):
         query_collection(index, db)
     
-main()
+main(create_index=False)

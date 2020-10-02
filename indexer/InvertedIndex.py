@@ -5,9 +5,9 @@ class InvertedIndex:
     def __init__(self, db):
         from TextPreprocessor import TextPreprocessor
         self.index = dict()
-        self.df_counts = dict()
         self.db = db
         self.preprocessor = TextPreprocessor()
+        self.output_file = './indexer/inverted_index.txt'
     def __repr__(self):
         """
         String representation of the Inverted Index object
@@ -61,6 +61,18 @@ class InvertedIndex:
     def get_index(self, n):
         print(list(self.index.items())[:n])
 
+    def load_index_from_file(self, file):
+        import json
+        f = open(file)
+        raw = f.read()
+        self.index = json.loads(raw)
+
+    def save_index(self):
+        import json
+        from Appearence import AppearanceEncoder
+        with open(self.output_file, 'w') as file:
+            file.write(json.dumps(self.index, cls=AppearanceEncoder))
+
     def calc_idf(self, term, num_docs, doc_freq):
         import numpy as np
         idf = np.log((1 + num_docs) / (1 + doc_freq)) + 1
@@ -77,8 +89,10 @@ class InvertedIndex:
             if term in self.index:
                 term_arr = []
                 for t in self.index[term]:
-                    term_arr.append((t.docId, t.tfidf))
-                #return { term: self.index[term] }
+                    try:
+                        term_arr.append((t.docId, t.tfidf))
+                    except:
+                        term_arr.append((t['docId'], t['tfidf']))
                 return { term: sorted(term_arr, key=itemgetter(1)) }
             else:
                 return {}
