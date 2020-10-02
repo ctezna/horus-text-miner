@@ -72,9 +72,14 @@ class InvertedIndex:
         This is a very naive search since it will just split the terms and show
         the documents where they appear.
         """
+        from operator import itemgetter
         for term in query.split(' '):
             if term in self.index:
-                return { term: self.index[term] }
+                term_arr = []
+                for t in self.index[term]:
+                    term_arr.append((t.docId, t.tfidf))
+                #return { term: self.index[term] }
+                return { term: sorted(term_arr, key=itemgetter(1)) }
             else:
                 return {}
         #return { term: self.index[term] for term in query.split(' ') if term in self.index }

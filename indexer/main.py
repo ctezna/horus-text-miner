@@ -4,10 +4,10 @@ def findWholeWord(w):
 
 def highlight_term(id, term, text):
     terms = findWholeWord(term)(text)
-    title = text.partition('\n')[0]
     for term in terms:
-        replaced_text = text.replace(title, "\033[1;31;40m{title}\033[0;0m".format(title=title))
-        final_text = replaced_text.replace(term, "\033[1;32;40m{term}\033[0;0m".format(term=term))
+        replaced_text = text.replace(term, "\033[1;32;40m{term}\033[0;0m".format(term=term))
+        title = replaced_text.partition('\n')[0]
+        final_text = replaced_text.replace(title, "\033[1;31;40m{title}\033[0;0m".format(title=title))
     return "--- document {id}: {replaced}".format(id=id, replaced=final_text)
 
 def load_document(file):
@@ -61,8 +61,10 @@ def query_collection(index, db):
     start = time.time()
     for term in result.keys():
         for appearance in result[term]:
-            document = db.get(appearance.docId)
-            print(highlight_term(appearance.docId, term, document['text']))
+            #document = db.get(appearance.docId)
+            #print(highlight_term(appearance.docId, term, document['text']))
+            document = db.get(appearance[0])
+            print(highlight_term(appearance[0], term, document['text']))
         print("-----------------------------")    
     end = time.time()
     print('\033[1;36;40m Retrieval time: \033[0;0m', end - start)
