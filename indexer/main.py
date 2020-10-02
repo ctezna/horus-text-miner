@@ -4,9 +4,11 @@ def findWholeWord(w):
 
 def highlight_term(id, term, text):
     terms = findWholeWord(term)(text)
+    title = text.partition('\n')[0]
     for term in terms:
-        replaced_text = text.replace(term, "\033[1;32;40m{term}\033[0;0m".format(term=term))
-    return "--- document {id}: {replaced}".format(id=id, replaced=replaced_text)
+        replaced_text = text.replace(title, "\033[1;34;40m{title}\033[0;0m".format(title=title))
+        final_text = replaced_text.replace(term, "\033[1;32;40m{term}\033[0;0m".format(term=term))
+    return "--- document {id}: {replaced}".format(id=id, replaced=final_text)
 
 def load_document(file):
     f = open(file)
@@ -24,13 +26,9 @@ def load_collection(files):
         texts.append((doc_id, text))
     return texts
 
-def index_corpus():
+def index_corpus(index):
     import os
     import time
-    from DocCollection import DocCollection
-    from InvertedIndex import InvertedIndex
-    db = DocCollection()
-    index = InvertedIndex(db)
 
     COLLECTION_DIR = './dataset/tech/'
     files = [COLLECTION_DIR + file for file in os.listdir(COLLECTION_DIR)]
@@ -56,7 +54,7 @@ def index_corpus():
 
     #index.get_index(1)
 
-def query_collection():
+def query_collection(index, db):
     import time
     search_term = input("Enter term(s) to search: ")
     start = time.time()
@@ -74,9 +72,13 @@ def query_collection():
     print('\033[1;32;40m Retrieval time: \033[0;0m', end - start)
 
 def main():
-    index_corpus()
+    from DocCollection import DocCollection
+    from InvertedIndex import InvertedIndex
+    db = DocCollection()
+    index = InvertedIndex(db)
+    index_corpus(index)
 
     while(True):
-        query_collection()
+        query_collection(index, db)
     
 main()
