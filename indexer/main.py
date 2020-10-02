@@ -1,5 +1,11 @@
+def findWholeWord(w):
+    import re
+    return re.compile(r'\b({0})'.format(w), flags=re.IGNORECASE).findall
+
 def highlight_term(id, term, text):
-    replaced_text = text.replace(term, "\033[1;32;40m {term} \033[0;0m".format(term=term))
+    terms = findWholeWord(term)(text)
+    for term in terms:
+        replaced_text = text.replace(term, "\033[1;32;40m{term}\033[0;0m".format(term=term))
     return "--- document {id}: {replaced}".format(id=id, replaced=replaced_text)
 
 def load_document(file):
@@ -32,12 +38,20 @@ def main():
 
     start = time.time()
     corpus = load_collection(files)
+    num_docs = len(corpus)
+    doc_freqs = index.doc_freq(corpus)
+    # for doc_id, text in corpus:
+    #     document = {
+    #         'id': doc_id,
+    #         'text': text
+    #     }
+    #     index.index_document(document)
     for doc_id, text in corpus:
         document = {
             'id': doc_id,
             'text': text
         }
-        index.index_document(document)
+        index.build_index(document, num_docs, doc_freqs)
     end = time.time()
     print('\033[1;32;40m Indexing time: \033[0;0m', end - start)
 
