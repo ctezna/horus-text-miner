@@ -26,11 +26,29 @@ def load_collection(files):
         texts.append((doc_id, text))
     return texts
 
+def load_db(index):
+    import os
+    import time
+
+    COLLECTION_DIR = './dataset/newDataset/'
+    files = [COLLECTION_DIR + file for file in os.listdir(COLLECTION_DIR)]
+
+    start = time.time()
+    corpus = load_collection(files)
+    for doc_id, text in corpus:
+        document = {
+            'id': doc_id,
+            'text': text
+        }
+    index.load_db(document)
+    end = time.time()
+    print('\033[1;36;40m Load DB time: \033[0;0m', end - start)
+
 def index_corpus(index):
     import os
     import time
 
-    COLLECTION_DIR = './dataset/tech/'
+    COLLECTION_DIR = './dataset/newDataset/'
     files = [COLLECTION_DIR + file for file in os.listdir(COLLECTION_DIR)]
 
     start = time.time()
@@ -52,6 +70,7 @@ def index_corpus(index):
 def query_collection(index, db, get_docs=False):
     import time
     import nltk
+    COLLECTION_DIR = './dataset/newDataset/'
     lemmatizer = nltk.WordNetLemmatizer()
     search_term = input("Enter term(s) to search: ").lower()
     if search_term in ['quit()', 'exit()']:
@@ -62,19 +81,27 @@ def query_collection(index, db, get_docs=False):
     result = index.lookup_query(search_term)
     end = time.time()
     print('\033[1;36;40m Search time: \033[0;0m', end - start)
-    
+
+    totalDocs = 0
     start = time.time()
     for term in result.keys():
         for appearance in result[term]:
             document = db.get(appearance[0])
             print('Document: ', appearance[0], ' Term found: ', term ,' Score: ', '{:.5f}'.format(appearance[1]))
             if get_docs:
-                print(highlight_term(appearance[0], term, document['text']))
+                try:
+                    text = document['text']
+                except:
+                    text = load_document(COLLECTION_DIR + appearance[0])[1]
+                print(highlight_term(appearance[0], term, text))
+                totalDocs += 1
         print("-----------------------------")    
     end = time.time()
+    print('\033[1;36;40m Total documents returned: \033[0;0m', totalDocs)
     print('\033[1;36;40m Retrieval time: \033[0;0m', end - start)
 
 def main(create_index=False):
+    import time
     from DocCollection import DocCollection
     from InvertedIndex import InvertedIndex
     db = DocCollection()
@@ -84,7 +111,10 @@ def main(create_index=False):
         index_corpus(index)
     else:
         try:
+            start = time.time()
             index.load_index_from_file('./indexer/inverted_index.txt')
+            end = time.time()
+            print('\033[1;36;40m Load Index time: \033[0;0m', end - start)
         except FileNotFoundError:
             print('Must create and save Inverted Index first!')
             user_input = input('Do you want to create Inverted Index now? y/n\n')
@@ -95,6 +125,6 @@ def main(create_index=False):
                 exit(0)
 
     while(True):
-        query_collection(index, db, get_docs=False) # get_docs cannot be True if create_index is False
+        query_collection(index, db, get_docs=True) # get_docs cannot be True if create_index is False
     
 main(create_index=False)

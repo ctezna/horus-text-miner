@@ -57,6 +57,10 @@ class InvertedIndex:
         self.db.add(document)
         return document
 
+    def load_db(self, document):
+        self.db.add(document)
+        return document
+
     def get_index(self, n):
         print(list(self.index.items())[:n])
 
@@ -84,6 +88,7 @@ class InvertedIndex:
         the documents where they appear.
         """
         from operator import itemgetter
+        result = {}
         for term in query.split(' '):
             if term in self.index:
                 term_arr = []
@@ -92,7 +97,6 @@ class InvertedIndex:
                         term_arr.append((t.docId, t.tfidf))
                     except:
                         term_arr.append((t['docId'], t['tfidf']))
-                return { term: sorted(term_arr, key=itemgetter(1)) }
-            else:
-                return {}
+                result.update({ term: sorted(term_arr, key=itemgetter(1)) })
+        return result
         #return { term: self.index[term] for term in query.split(' ') if term in self.index }
