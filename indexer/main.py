@@ -26,24 +26,6 @@ def load_collection(files):
         texts.append((doc_id, text))
     return texts
 
-def load_db(index):
-    import os
-    import time
-
-    COLLECTION_DIR = './dataset/newDataset/'
-    files = [COLLECTION_DIR + file for file in os.listdir(COLLECTION_DIR)]
-
-    start = time.time()
-    corpus = load_collection(files)
-    for doc_id, text in corpus:
-        document = {
-            'id': doc_id,
-            'text': text
-        }
-    index.load_db(document)
-    end = time.time()
-    print('\033[1;36;40m Load DB time: \033[0;0m', end - start)
-
 def index_corpus(index):
     import os
     import time
@@ -64,8 +46,6 @@ def index_corpus(index):
     end = time.time()
     print('\033[1;36;40m Indexing time: \033[0;0m', end - start)
     index.save_index()
-
-    #index.get_index(1)
 
 def query_collection(index, db, get_docs=False):
     import time
@@ -125,6 +105,6 @@ def main(create_index=False):
                 exit(0)
 
     while(True):
-        query_collection(index, db, get_docs=True) # get_docs cannot be True if create_index is False
+        query_collection(index, db, get_docs=True)
     
 main(create_index=False)
