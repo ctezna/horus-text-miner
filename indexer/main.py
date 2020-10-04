@@ -2,13 +2,16 @@ def findWholeWord(w):
     import re
     return re.compile(r'\b({0})'.format(w), flags=re.IGNORECASE).findall
 
-def highlight_term(id, term, text):
+def highlight_term(term, text, is_summary=False):
     terms = findWholeWord(term)(text)
     for term in terms:
         replaced_text = text.replace(term, "\033[1;32;40m{term}\033[0;0m".format(term=term))
-        title = replaced_text.partition('\n')[0]
-        final_text = replaced_text.replace(title, "\033[1;31;40m{title}\033[0;0m".format(title=title))
-    return "--- document {id}: {replaced}".format(id=id, replaced=final_text)
+        if not is_summary:
+            title = replaced_text.partition('\n')[0]
+            replaced_text = replaced_text.replace(title, "\033[1;31;40m{title}\033[0;0m".format(title=title))
+        else:
+            return replaced_text
+    return "{replaced}".format(replaced=' '.join(replaced_text.partition('\n')[1:]))
 
 def load_document(file):
     f = open(file)
@@ -50,11 +53,17 @@ def index_corpus(index):
 def query_collection(index, db, get_docs=False):
     import time
     import nltk
+    from doc_summary import document_summary
     COLLECTION_DIR = './dataset/newDataset/'
     lemmatizer = nltk.WordNetLemmatizer()
     search_term = input("Enter term(s) to search: ").lower()
+    generate_summary = -1
     if search_term in ['quit()', 'exit()']:
         exit(0)
+    if 'summary()' in search_term.split() or 's()' in search_term.split():
+        generate_summary = float(input('How long of summaries? (Choose number between 0 and 1, where 0 returns full text.)\n')) * 2
+        search_term.replace('summary()', '')
+        search_term.replace('s()', '')
 
     search_term = lemmatizer.lemmatize(search_term)
     start = time.time()
@@ -67,14 +76,27 @@ def query_collection(index, db, get_docs=False):
     for term in result.keys():
         for appearance in result[term]:
             document = db.get(appearance[0])
-            print('Document: ', appearance[0], ' Term found: ', term ,' Score: ', '{:.5f}'.format(appearance[1]))
+            print('\033[1;35;40m'+('Document: '+ appearance[0]+ ' Term found: '+ term +' Score: '+ '{:.5f}'.format(appearance[1])) + '\033[0;0m')
             if get_docs:
                 try:
                     text = document['text']
                 except:
                     text = load_document(COLLECTION_DIR + appearance[0])[1]
-                print(highlight_term(appearance[0], term, text))
-                totalDocs += 1
+                title = text.partition('\n')[0]
+                print('Title: ', "\033[1;31;40m{title}\033[0;0m".format(title=title))
+                if generate_summary > 0:
+                    summary = document_summary(text, generate_summary)
+                    try:
+                        print(highlight_term(term, summary, is_summary=True))
+                    except:
+                        print('{summary}'.format(summary=summary))
+                    # get_full_text = input('See full text? y/n\n')
+                    # if get_full_text.lower() in ['y', 'yes']:
+                    #     print(highlight_term(appearance[0], term, text))
+                else:
+                    print(highlight_term(term, text))
+                print('\n')
+            totalDocs += 1
         print("-----------------------------")    
     end = time.time()
     print('\033[1;36;40m Total documents returned: \033[0;0m', totalDocs)
