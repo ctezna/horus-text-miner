@@ -5,13 +5,13 @@ def findWholeWord(w):
 def highlight_term(term, text, is_summary=False):
     terms = findWholeWord(term)(text)
     for term in terms:
-        replaced_text = text.replace(term, "\033[1;32;40m{term}\033[0;0m".format(term=term))
+        replaced_text = text.replace(term, '\033[1;32;40m{term}\033[0;0m'.format(term=term))
         if not is_summary:
             title = replaced_text.partition('\n')[0]
-            replaced_text = replaced_text.replace(title, "\033[1;31;40m{title}\033[0;0m".format(title=title))
+            replaced_text = replaced_text.replace(title, '\033[1;31;40m{title}\033[0;0m'.format(title=title))
         else:
             return replaced_text
-    return "{replaced}".format(replaced=' '.join(replaced_text.partition('\n')[1:]))
+    return '{replaced}'.format(replaced=' '.join(replaced_text.partition('\n')[1:]))
 
 def load_document(file):
     f = open(file)
@@ -56,7 +56,7 @@ def query_collection(index, db, get_docs=False):
     from doc_summary import document_summary
     COLLECTION_DIR = './dataset/newDataset/'
     lemmatizer = nltk.WordNetLemmatizer()
-    search_term = input("Enter term(s) to search: ").lower()
+    search_term = input('Enter term(s) to search: ').lower()
     generate_summary = -1
     if search_term in ['quit()', 'exit()']:
         exit(0)
@@ -83,7 +83,7 @@ def query_collection(index, db, get_docs=False):
                 except:
                     text = load_document(COLLECTION_DIR + appearance[0])[1]
                 title = text.partition('\n')[0]
-                print('Title: ', "\033[1;31;40m{title}\033[0;0m".format(title=title))
+                print('Title: ', '\033[1;31;40m{title}\033[0;0m'.format(title=title))
                 if generate_summary > 0:
                     summary = document_summary(text, generate_summary)
                     try:
@@ -97,7 +97,7 @@ def query_collection(index, db, get_docs=False):
                     print(highlight_term(term, text))
                 print('\n')
             totalDocs += 1
-        print("-----------------------------")    
+        print('-----------------------------')    
     end = time.time()
     print('\033[1;36;40m Total documents returned: \033[0;0m', totalDocs)
     print('\033[1;36;40m Retrieval time: \033[0;0m', end - start)

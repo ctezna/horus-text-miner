@@ -8,12 +8,6 @@ class Appearance:
         self.frequency = frequency
         self.tfidf = idf * frequency
         
-    def __repr__(self):
-        """
-        String representation of the Appearance object
-        """
-        return str(self.__dict__)
-
 
 from json import JSONEncoder
 class AppearanceEncoder(JSONEncoder):

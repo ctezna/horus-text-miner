@@ -8,11 +8,6 @@ class InvertedIndex:
         self.db = db
         self.preprocessor = TextPreprocessor()
         self.output_file = './indexer/inverted_index.txt'
-    def __repr__(self):
-        """
-        String representation of the Inverted Index object
-        """
-        return str(self.index)
 
     def doc_freq(self, corpus):
         from gensim import corpora

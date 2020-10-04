@@ -4,11 +4,6 @@ class DocCollection:
     """
     def __init__(self):
         self.db = dict()
-    def __repr__(self):
-        """
-        String representation of the Database object
-        """
-        return str(self.__dict__)
     
     def get(self, id):
         """
