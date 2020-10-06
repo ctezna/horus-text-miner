@@ -14,13 +14,14 @@ def highlight_term(term, text, is_summary=False):
     return '{replaced}'.format(replaced=' '.join(replaced_text.partition('\n')[1:]))
 
 def load_document(file):
-    f = open(file)
-    try:
-        raw = f.read()
-        return file.split('/')[-1], raw
-    except:
-        print(file)
-        pass
+    with open(file, 'r') as f:
+        #f = open(file)
+        try:
+            raw = f.read()
+            return file.split('/')[-1], raw
+        except:
+            print(file)
+            pass
 
 def load_collection(files):
     texts = []

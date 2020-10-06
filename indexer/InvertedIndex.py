@@ -64,6 +64,7 @@ class InvertedIndex:
         f = open(file)
         raw = f.read()
         self.index = json.loads(raw)
+        f.close()
 
     def save_index(self):
         import json
