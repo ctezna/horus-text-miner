@@ -105,9 +105,11 @@ def score_sentences(tf_idf_matrix):
 
 def calc_average_score(sentence_scores):
     import numpy as np
-    sumValues = np.sum(sentence_scores) 
+    sumValues = 0
+    for entry in sentence_scores:
+        sumValues = np.sum(sentence_scores[entry])
     # Average value of a sentence from original summary_text
-    average = (sumValues.item() / len(sentence_scores))
+    average = (sumValues / len(sentence_scores))
     return average
 
 def generate_summary(sentences, sentence_scores, threshold):

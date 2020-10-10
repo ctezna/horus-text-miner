@@ -11,6 +11,8 @@ class TextPreprocessor:
         import nltk
         from nltk.corpus import stopwords
         nltk.download('stopwords')
+        nltk.download('punkt')
+        nltk.download('wordnet')
         self.stopwords = stopwords.words('english')
         self.remove_terms = ['the', '``', "''"]
         self.lemmatizer = nltk.WordNetLemmatizer()
