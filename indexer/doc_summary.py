@@ -29,11 +29,10 @@ def sentence_frequency_matrix(sentences, stopWords):
         freq_table = {}
         words = word_tokenize(sent)
         for word in words:
-            word = word.lower()
-            word = lem.lemmatize(word)
+            word = lem.lemmatize(word.lower())
             if word in stopWords:
                 continue
-    
+
             if word in freq_table:
                 freq_table[word] += 1
             else:
@@ -105,19 +104,16 @@ def score_sentences(tf_idf_matrix):
     return sentence_scores
 
 def calc_average_score(sentence_scores):
-    sumValues = 0
-    for entry in sentence_scores:
-        sumValues += sentence_scores[entry]
+    import numpy as np
+    sumValues = np.sum(sentence_scores) 
     # Average value of a sentence from original summary_text
     average = (sumValues / len(sentence_scores))
     return average
 
 def generate_summary(sentences, sentence_scores, threshold):
-    sentence_count = 0
+    #Can optimize using .join()
     summary = ''
     for sentence in sentences:
         if sentence[:15] in sentence_scores and sentence_scores[sentence[:15]] >= (threshold):
             summary += " " + sentence
-            sentence_count += 1
-
     return summary
