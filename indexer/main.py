@@ -42,10 +42,7 @@ def index_corpus(index):
     num_docs = len(corpus)
     doc_freqs = index.doc_freq(corpus)
     for doc_id, text in corpus:
-        document = {
-            'id': doc_id,
-            'text': text
-        }
+        document = { 'id': doc_id, 'text': text }
         index.build_index(document, num_docs, doc_freqs)
     end = time.time()
     print('\033[1;36;40m Indexing time: \033[0;0m', end - start)
