@@ -24,10 +24,30 @@ def load_document(file):
             pass
 
 def load_collection(files):
+    from mpi4py import mpi4py
+
+    comm = MPI.COMM_WORLD
+    size = comm.Get_size()
+    rank = comm.Get_rank()
+
     texts = []
-    for file in files:
-        doc_id, text = load_document(file)
+    files_length = len(files) - 1
+    i = 0
+    while i < files_length:
+        if rank == 0:
+            data = [files[i], files[i+1]]
+        else: 
+            data = None
+
+        data = comm.scatter(data, root=0)
+
+        data = load_document(data)
+
+        doc_id, text = comm.gather(data, root=0)
+        text = ""
         texts.append((doc_id, text))
+        i+=2
+
     return texts
 
 def index_corpus(index):
