@@ -10,6 +10,7 @@ class Appearance:
         
 
 from json import JSONEncoder
+
 class AppearanceEncoder(JSONEncoder):
     """
     Used to encode Appearance object to JSON
