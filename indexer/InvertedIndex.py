@@ -7,12 +7,11 @@ class InvertedIndex:
         self.index = dict()
         self.db = db
         self.preprocessor = TextPreprocessor()
-        self.output_file = '../indexer/inverted_index.txt'
+        self.output_file = './indexer/inverted_index.txt'
 
 
-    def doc_freq(self, corpus):
+    def _doc_freq(self, corpus):
         from gensim import corpora
-<<<<<<< HEAD
         docs = [self.preprocessor.preprocess(doc) for docid, doc in corpus]
         dictionary = corpora.Dictionary(docs)
         dfs = {}
@@ -20,19 +19,16 @@ class InvertedIndex:
             dfs[key] = dictionary.dfs[value]
         return dfs
 
-    def pdoc_freq(self, corpus):
+    def doc_freq(self, corpus):
         from gensim import corpora
         import pymp
         pymp.config.nested = False
         pymp.config.thread_limit = 4
-        docs = pymp.shared.array( ((len(corpus) ,))
-        for _, doc in corpus:
-            docs.append(self.preprocessor.preprocess(doc))
+        docs = pymp.shared.list()
+        with pymp.Parallel(4) as p:
+            for index in p.range(0, len(corpus)):
+                docs.append(self.preprocessor.preprocess(corpus[index][1]))
         dictionary = corpora.Dictionary(docs)
-=======
-
-        dictionary = corpora.Dictionary(self.preprocessor.preprocess(doc) for docid, doc in corpus)
->>>>>>> 2f79542453e8ec92cda1ca05483e29aa96f090dd
         dfs = {}
 
         for key, value in dictionary.token2id.items():

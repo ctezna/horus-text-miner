@@ -44,7 +44,7 @@ def index_corpus(index):
     import os
     import time
 
-    COLLECTION_DIR = '../dataset/newDataset/'
+    COLLECTION_DIR = './dataset/newDataset/'
     files = [COLLECTION_DIR + file for file in os.listdir(COLLECTION_DIR)]
 
     start = time.time()
@@ -56,14 +56,10 @@ def index_corpus(index):
 
     start = time.time()
     doc_freqs = index.doc_freq(corpus)
-<<<<<<< HEAD
     end = time.time()
     print('\033[1;36;40m doc_freq time: \033[0;0m', end - start)
 
     start = time.time()
-=======
-
->>>>>>> 2f79542453e8ec92cda1ca05483e29aa96f090dd
     for doc_id, text in corpus:
         document = { 'id': doc_id, 'text': text }
         index.build_index(document, num_docs, doc_freqs)
@@ -78,7 +74,7 @@ def query_collection(index, db, get_docs=False):
     import nltk
     from doc_summary import document_summary
 
-    COLLECTION_DIR = '../dataset/newDataset/'
+    COLLECTION_DIR = './dataset/newDataset/'
     lemmatizer = nltk.WordNetLemmatizer()
     search_term = input('Enter term(s) to search: ').lower()
     generate_summary = -1
@@ -149,7 +145,7 @@ def main(create_index=False):
     else:
         try:
             start = time.time()
-            index.load_index_from_file('../indexer/inverted_index.txt')
+            index.load_index_from_file('./indexer/inverted_index.txt')
             end = time.time()
             print('\033[1;36;40m Load Index time: \033[0;0m', end - start)
 

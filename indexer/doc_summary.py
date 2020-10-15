@@ -128,12 +128,7 @@ def calc_average_score(sentence_scores):
     sumValues = 0
 
     for entry in sentence_scores:
-<<<<<<< HEAD
         sumValues += sentence_scores[entry]
-=======
-        sumValues = np.sum(sentence_scores[entry])
-        
->>>>>>> 2f79542453e8ec92cda1ca05483e29aa96f090dd
     # Average value of a sentence from original summary_text
     average = (sumValues / len(sentence_scores))
 
@@ -147,9 +142,6 @@ def generate_summary(sentences, sentence_scores, threshold):
     for sentence in sentences:
         if sentence[:15] in sentence_scores and sentence_scores[sentence[:15]] >= (threshold):
             summary += " " + sentence
-<<<<<<< HEAD
             sentence_count += 1
-=======
->>>>>>> 2f79542453e8ec92cda1ca05483e29aa96f090dd
 
     return summary
