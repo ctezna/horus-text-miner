@@ -1,0 +1,13 @@
+Multiprocessing/Vectorization:
+- TextPreprocessor.py: 
+    - def preprocess()
+- doc_summary.py:
+    - def document_summary()
+    - rest of methods apply Vectorization
+- InvertedIndex.py:
+    - def doc_freq()
+
+
+MPI:
+- main.py:
+    - def index_corpus()

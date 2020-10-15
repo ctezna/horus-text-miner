@@ -11,7 +11,22 @@ class InvertedIndex:
 
     def doc_freq(self, corpus):
         from gensim import corpora
-        dictionary = corpora.Dictionary(self.preprocessor.preprocess(doc) for docid, doc in corpus)
+        docs = [self.preprocessor.preprocess(doc) for docid, doc in corpus]
+        dictionary = corpora.Dictionary(docs)
+        dfs = {}
+        for key, value in dictionary.token2id.items():
+            dfs[key] = dictionary.dfs[value]
+        return dfs
+
+    def pdoc_freq(self, corpus):
+        from gensim import corpora
+        import pymp
+        pymp.config.nested = False
+        pymp.config.thread_limit = 4
+        docs = pymp.shared.array( ((len(corpus) ,))
+        for _, doc in corpus:
+            docs.append(self.preprocessor.preprocess(doc))
+        dictionary = corpora.Dictionary(docs)
         dfs = {}
         for key, value in dictionary.token2id.items():
             dfs[key] = dictionary.dfs[value]

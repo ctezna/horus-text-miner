@@ -39,8 +39,17 @@ def index_corpus(index):
 
     start = time.time()
     corpus = load_collection(files)
+    end = time.time()
+    print('\033[1;36;40m Load collection time: \033[0;0m', end - start)
+
     num_docs = len(corpus)
+
+    start = time.time()
     doc_freqs = index.doc_freq(corpus)
+    end = time.time()
+    print('\033[1;36;40m doc_freq time: \033[0;0m', end - start)
+
+    start = time.time()
     for doc_id, text in corpus:
         document = { 'id': doc_id, 'text': text }
         index.build_index(document, num_docs, doc_freqs)
@@ -126,5 +135,8 @@ def main(create_index=False):
 
     while(True):
         query_collection(index, db, get_docs=True)
-    
-main(create_index=False)
+
+if __name__ == "__main__":
+    from multiprocessing import freeze_support
+    freeze_support()
+    main(create_index=True)
