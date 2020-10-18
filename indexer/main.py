@@ -61,30 +61,34 @@ def index_corpus(index):
     print('\033[1;36;40m doc_freq time: \033[0;0m', end - start)
 
     start = time.time()
-    corpus_length = len(corpus) - 1
+    corpus_length = len(corpus) - 2
     i = 0
 
     comm = MPI.COMM_WORLD
     size = comm.Get_size()
     rank = comm.Get_rank()
     while i < corpus_length:
-        if rank == 0:
+        if rank == 0 or i%size == rank:
+            #En este caso se correria mpiexec -n 3 .....
             data = []
             
             doc_id, text = corpus[i]
             doc_id_1, text_1 = corpus[i+1]
-
+            doc_id_2, text_2 = corpus[i+2]
+            
             document = { 'id': doc_id, 'text': text }
             document_1 = { 'id': doc_id_1, 'text': text_1 }
+            document_2 = { 'id': doc_id_2, 'text': text_2 }
 
             data.append(document)
             data.append(document_1)
+            data.append(document_2)
         else:
             data = None
 
         data = comm.scatter(data, root=0)
         data = index.build_index(data, num_docs, doc_freqs)
-        i+=2
+        i+=1
     end = time.time()
     print('\033[1;36;40m Indexing time: \033[0;0m', end - start)
 
