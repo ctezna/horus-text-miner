@@ -39,7 +39,7 @@ def load_collection(files):
 
     return texts
 
-def _index_corpus(index):
+def index_corpus(index):
     import os
     import time
 
@@ -67,7 +67,7 @@ def _index_corpus(index):
     print('\033[1;36;40m Indexing time: \033[0;0m', end - start)
     index.save_index()
 
-def index_corpus(index):
+def _index_corpus(index):
     import os
     import time
     from mpi4py import MPI
@@ -100,59 +100,12 @@ def index_corpus(index):
             
             di, text = corpus[i]
             di1, text1 = corpus[i+1]
-            #di2, text2 = corpus[i+2]
-            #di3, text3 = corpus[i+3]
-            #di4, text4 = corpus[i+4]
-            #di5, text5 = corpus[i+5]
-            #di6, text6 = corpus[i+6]
-            #di7, text7 = corpus[i+7]
-            #di8, text8 = corpus[i+8]
-            #di9, text9 = corpus[i+9]
-            #di10, text10 = corpus[i+10]
-            #di11, text11 = corpus[i+11]
-            #di12, text12 = corpus[i+12]
-            #di13, text13 = corpus[i+13]
-            #di14, text14 = corpus[i+14]
-            #di15, text15 = corpus[i+15]
-            #di16, text16 = corpus[i+16]
-            #di17, text17 = corpus[i+17]
-            #di18, text18 = corpus[i+18]
-            #di19, text19 = corpus[i+19]
-            #di20, text20 = corpus[i+20]
-            #di21, text21 = corpus[i+21]
-            #di22, text22 = corpus[i+22]
-            #di23, text23 = corpus[i+23]
             
             document = { 'id': di, 'text': text }
             document1 = { 'id': di1, 'text': text1 }
-            #document2 = { 'id': di2, 'text': text2 }
-            #document3 = { 'id': di3, 'text': text3 }
-            #document4 = { 'id': di4, 'text': text4 }
-            #document5 = { 'id': di5, 'text': text5 }
-            #document6 = { 'id': di6, 'text': text6 }
-            #document7 = { 'id': di7, 'text': text7 }
-            #document8 = { 'id': di8, 'text': text8 }
-            #document9 = { 'id': di9, 'text': text9 }
-            #document10 = { 'id': di10, 'text': text10 }
-            #document11 = { 'id': di11, 'text': text11 }
-            #document12 = { 'id': di12, 'text': text12 }
-            #document13 = { 'id': di13, 'text': text13 }
-            #document14 = { 'id': di14, 'text': text14 }
-            #document15 = { 'id': di15, 'text': text15 }
-            #document16 = { 'id': di16, 'text': text16 }
-            #document17 = { 'id': di17, 'text': text17 }
-            #document18 = { 'id': di18, 'text': text18 }
-            #document19 = { 'id': di19, 'text': text19 }
-            #document20 = { 'id': di20, 'text': text20 }
-            #document21 = { 'id': di21, 'text': text21 }
-            #document22 = { 'id': di22, 'text': text22 }
-            #document23 = { 'id': di23, 'text': text23 }
 
             data.append(document)
             data.append(document1)
-            #data.append(document2)
-            #data.append(document3)
-            #data.append(document4)
         else:
             data = None
 
