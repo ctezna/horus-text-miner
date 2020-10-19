@@ -12,6 +12,7 @@ Parallel programming framework for efficient text mining.
 <strong>Carlos Tezna</strong><br>
 <small>cteznas@eafit.edu.co</small><br>
 <p>This project is a completely original implementation that relies heavily on theory, guidelines, and methods detailed in works found in the <strong>Reference</strong> section. I am an architect designer and programmer for Horus team.</p>
+<p><a href="https://www.youtube.com/watch?v=_GzPdvDUGOI&feature=youtu.be">Contributions video</a></p>
 </div>
 
 <div>
