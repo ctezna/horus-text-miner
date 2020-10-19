@@ -39,6 +39,33 @@ def load_collection(files):
 
     return texts
 
+def _index_corpus(index):
+    import os
+    import time
+
+    COLLECTION_DIR = './dataset/newDataset/'
+    files = [COLLECTION_DIR + file for file in os.listdir(COLLECTION_DIR)]
+
+    start = time.time()
+    corpus = load_collection(files)
+    end = time.time()
+    print('\033[1;36;40m Load collection time: \033[0;0m', end - start)
+
+    num_docs = len(corpus)
+
+    start = time.time()
+    doc_freqs = index.doc_freq(corpus)
+    end = time.time()
+    print('\033[1;36;40m doc_freq time: \033[0;0m', end - start)
+
+    start = time.time()
+    for doc_id, text in corpus:
+        document = { 'id': doc_id, 'text': text }
+        index.build_index(document, num_docs, doc_freqs)
+
+    end = time.time()
+    print('\033[1;36;40m Indexing time: \033[0;0m', end - start)
+    index.save_index()
 
 def index_corpus(index):
     import os
