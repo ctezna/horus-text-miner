@@ -60,14 +60,33 @@ def index_corpus(index):
     print('\033[1;36;40m doc_freq time: \033[0;0m', end - start)
 
     start = time.time()
-    for doc_id, text in corpus:
-        document = { 'id': doc_id, 'text': text }
-        index.build_index(document, num_docs, doc_freqs)
+
+
+    # determine the size of each sub-task
+    nprocs = 4
+    ave, res = divmod(len(corpus), nprocs)
+    counts = [ave + 1 if p < res else ave for p in range(nprocs)]
+
+    # determine the starting and ending indices of each sub-task
+    starts = [sum(counts[:p]) for p in range(nprocs)]
+    ends = [sum(counts[:p+1]) for p in range(nprocs)]
+
+    # converts data into a list of arrays 
+    data = [corpus[starts[p]:ends[p]] for p in range(nprocs)]
+
+    generate_index(index, data[0], num_docs, doc_freqs)
+    generate_index(index, data[1], num_docs, doc_freqs)
+    generate_index(index, data[2], num_docs, doc_freqs)
+    generate_index(index, data[3], num_docs, doc_freqs)
 
     end = time.time()
     print('\033[1;36;40m Indexing time: \033[0;0m', end - start)
     index.save_index()
 
+def generate_index(index, corpus, num_docs, doc_freqs):
+    for doc_id, text in corpus:
+        document = { 'id': doc_id, 'text': text }
+        index.build_index(document, num_docs, doc_freqs)
 
 def query_collection(index, db, get_docs=False):
     import time
@@ -160,7 +179,7 @@ def main(create_index=False):
                 exit(0)
 
     while(True):
-        query_collection(index, db, get_docs=True)
+        query_collection(index, db, get_docs=False)
 
 if __name__ == "__main__":
     from multiprocessing import freeze_support
