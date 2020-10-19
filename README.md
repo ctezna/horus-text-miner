@@ -25,6 +25,7 @@ Parallel programming framework for efficient text mining.
 <strong>Andres Pulgarin</strong><br>
 <small>apulgar@eafit.edu.co</small><br>
 <p>This project is a completely original implementation that relies heavily on theory, guidelines, and methods detailed in works found in the <strong>Reference</strong> section. I am a programmer and analyst for Horus team.</p>
+<p><a href="https://www.youtube.com/watch?v=cFa0evavLLs">Contributions video</a></p>
 </div>
 
 
