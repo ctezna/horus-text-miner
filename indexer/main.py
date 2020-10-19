@@ -39,7 +39,6 @@ def load_collection(files):
 
     return texts
 
-
 def index_corpus(index):
     import os
     import time
@@ -83,10 +82,54 @@ def index_corpus(index):
     print('\033[1;36;40m Indexing time: \033[0;0m', end - start)
     index.save_index()
 
-def generate_index(index, corpus, num_docs, doc_freqs):
-    for doc_id, text in corpus:
-        document = { 'id': doc_id, 'text': text }
-        index.build_index(document, num_docs, doc_freqs)
+def _index_corpus(index):
+    import os
+    import time
+    from mpi4py import MPI
+
+    COLLECTION_DIR = './dataset/newDataset/'
+    files = [COLLECTION_DIR + file for file in os.listdir(COLLECTION_DIR)]
+
+    start = time.time()
+    corpus = load_collection(files)
+    end = time.time()
+    print('\033[1;36;40m Load collection time: \033[0;0m', end - start)
+
+    num_docs = len(corpus)
+
+    start = time.time()
+    doc_freqs = index.doc_freq(corpus)
+    end = time.time()
+    print('\033[1;36;40m doc_freq time: \033[0;0m', end - start)
+
+    start = time.time()
+    corpus_length = len(corpus) - 1
+    i = 0
+
+    comm = MPI.COMM_WORLD
+    size = comm.Get_size()
+    rank = comm.Get_rank()
+    while i < corpus_length:
+        if rank == 0 or i%size == rank:
+            data = []
+            
+            di, text = corpus[i]
+            di1, text1 = corpus[i+1]
+            
+            document = { 'id': di, 'text': text }
+            document1 = { 'id': di1, 'text': text1 }
+
+            data.append(document)
+            data.append(document1)
+        else:
+            data = None
+
+        data = comm.scatter(data, root=0)
+        data = index.build_index(data, num_docs, doc_freqs)
+        i+=1
+    end = time.time()
+    print('\033[1;36;40m Indexing time: \033[0;0m', end - start)
+
 
 def query_collection(index, db, get_docs=False):
     import time
